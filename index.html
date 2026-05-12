@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RunCoach — Your Personal Running Coach</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<!-- ===== HEADER / NAV ===== -->
+<header>
+  <div class="header-inner">
+    <div class="logo">
+      <span class="logo-icon">🏃</span>
+      <span>RunCoach</span>
+    </div>
+    <nav>
+      <button class="active" data-page="page-dashboard">🏠 Dashboard</button>
+      <button data-page="page-plan">📋 Training Plan</button>
+      <button data-page="page-logger">➕ Log a Run</button>
+      <button data-page="page-progress">📈 Progress</button>
+    </nav>
+  </div>
+</header>
+
+<!-- ===== TOAST ===== -->
+<div id="toast"></div>
+
+<main>
+
+  <!-- ==============================
+       PAGE: DASHBOARD
+  =============================== -->
+  <div id="page-dashboard" class="page">
+
+    <div class="hero">
+      <h1>Welcome back, Runner! 👟</h1>
+      <p>Track your runs, follow your training plan, and crush your goals.</p>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-icon">🏃</div>
+        <div class="stat-value" id="stat-total-runs">0</div>
+        <div class="stat-label">Total Runs</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">📏</div>
+        <div class="stat-value" id="stat-total-km">0.0</div>
+        <div class="stat-label">Total km</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">📅</div>
+        <div class="stat-value" id="stat-week-km">0.0</div>
+        <div class="stat-label">This Week km</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">⏱️</div>
+        <div class="stat-value" id="stat-total-time">0:00</div>
+        <div class="stat-label">Total Time</div>
+      </div>
+    </div>
+
+    <!-- Recent Runs -->
+    <div class="card">
+      <div class="card-title">🕐 Recent Runs</div>
+      <div style="overflow-x:auto">
+        <table class="recent-runs-table">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Distance</th>
+              <th>Duration</th>
+              <th>Pace</th>
+            </tr>
+          </thead>
+          <tbody id="recent-runs-tbody">
+            <tr><td colspan="4" style="text-align:center;color:var(--text-muted);padding:1.5rem">
+              No runs yet — go log your first run!
+            </td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Tips -->
+    <div class="card">
+      <div class="card-title">💡 Training Tips</div>
+      <ul style="padding-left:1.2rem;display:flex;flex-direction:column;gap:.5rem;font-size:.93rem;color:var(--text-muted)">
+        <li><strong style="color:var(--primary)">80/20 rule:</strong> Run 80% of your weekly mileage at an easy, conversational pace.</li>
+        <li><strong style="color:var(--primary)">Rest days:</strong> Recovery is when your body gets stronger — never skip a rest day.</li>
+        <li><strong style="color:var(--primary)">10% rule:</strong> Increase your weekly mileage by no more than 10% per week to prevent injury.</li>
+        <li><strong style="color:var(--primary)">Hydration:</strong> Drink 500 ml of water 2 hours before a long run, and sip during.</li>
+      </ul>
+    </div>
+
+  </div><!-- /page-dashboard -->
+
+
+  <!-- ==============================
+       PAGE: TRAINING PLAN
+  =============================== -->
+  <div id="page-plan" class="page">
+
+    <div class="section-header">
+      <div class="section-title">📋 Training Plan Generator</div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">⚙️ Configure Your Plan</div>
+      <form id="plan-form">
+        <div class="form-grid">
+
+          <div class="form-group">
+            <label for="plan-goal">Race Goal</label>
+            <select id="plan-goal" name="goal" required>
+              <option value="5k">5K</option>
+              <option value="10k">10K</option>
+              <option value="half">Half Marathon (21.1 km)</option>
+              <option value="marathon">Full Marathon (42.2 km)</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="plan-level">Fitness Level</label>
+            <select id="plan-level" name="level" required>
+              <option value="beginner">Beginner — new to running</option>
+              <option value="intermediate">Intermediate — running 1+ year</option>
+              <option value="advanced">Advanced — racing regularly</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="plan-days">Days Per Week</label>
+            <select id="plan-days" name="days" required>
+              <option value="3">3 days / week</option>
+              <option value="4" selected>4 days / week</option>
+              <option value="5">5 days / week</option>
+              <option value="6">6 days / week</option>
+            </select>
+          </div>
+
+        </div>
+
+        <div style="margin-top:1.25rem">
+          <button type="submit" class="btn btn-primary">🗓️ Generate Plan</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Legend -->
+    <div class="card" style="padding:1rem 1.5rem">
+      <div style="display:flex;flex-wrap:wrap;gap:.75rem;font-size:.85rem">
+        <span><span class="day-easy">●</span> Easy Run</span>
+        <span><span class="day-tempo">●</span> Tempo Run</span>
+        <span><span class="day-interval">●</span> Intervals</span>
+        <span><span class="day-long">●</span> Long Run</span>
+        <span><span class="day-rest">●</span> Rest</span>
+      </div>
+    </div>
+
+    <div id="plan-output" class="plan-container"></div>
+
+  </div><!-- /page-plan -->
+
+
+  <!-- ==============================
+       PAGE: LOG A RUN
+  =============================== -->
+  <div id="page-logger" class="page">
+
+    <div class="section-header">
+      <div class="section-title">➕ Log a Run</div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">🏃 Run Details</div>
+      <form id="run-form">
+        <div class="form-grid">
+
+          <div class="form-group">
+            <label for="run-date">Date</label>
+            <input type="date" id="run-date" name="date" required />
+          </div>
+
+          <div class="form-group">
+            <label for="run-distance">Distance (km)</label>
+            <input type="number" id="run-distance" name="distance"
+                   placeholder="e.g. 5.2" min="0.01" step="0.01" required />
+          </div>
+
+          <div class="form-group">
+            <label for="run-duration">Duration (mm:ss or hh:mm:ss)</label>
+            <input type="text" id="run-duration" name="duration"
+                   placeholder="e.g. 28:30 or 1:02:45" required />
+          </div>
+
+        </div>
+
+        <div class="form-group" style="margin-top:1rem">
+          <label for="run-notes">Notes (optional)</label>
+          <textarea id="run-notes" name="notes"
+                    placeholder="How did it feel? Route, weather, gear…"></textarea>
+        </div>
+
+        <div style="margin-top:1.25rem;display:flex;gap:.75rem;flex-wrap:wrap">
+          <button type="submit" class="btn btn-primary">💾 Save Run</button>
+          <button type="reset" class="btn" style="background:var(--bg);border:1.5px solid var(--border)">Clear</button>
+        </div>
+      </form>
+    </div>
+
+    <div class="card">
+      <div class="card-title">ℹ️ Duration Tips</div>
+      <ul style="padding-left:1.2rem;display:flex;flex-direction:column;gap:.4rem;font-size:.9rem;color:var(--text-muted)">
+        <li>Enter duration as <strong>mm:ss</strong> — e.g. <code>28:30</code> for 28 minutes 30 seconds</li>
+        <li>For longer runs use <strong>hh:mm:ss</strong> — e.g. <code>1:45:00</code> for 1 hour 45 minutes</li>
+        <li>Pace is calculated automatically after saving</li>
+      </ul>
+    </div>
+
+  </div><!-- /page-logger -->
+
+
+  <!-- ==============================
+       PAGE: PROGRESS
+  =============================== -->
+  <div id="page-progress" class="page">
+
+    <div class="section-header">
+      <div class="section-title">📈 My Progress</div>
+    </div>
+
+    <!-- Mileage Chart -->
+    <div class="card">
+      <div class="card-title">📊 Weekly Mileage</div>
+      <div class="chart-wrap">
+        <canvas id="mileageChart"></canvas>
+      </div>
+    </div>
+
+    <!-- Run History Table -->
+    <div class="card">
+      <div class="card-title">📝 Run History</div>
+      <div class="runs-table-wrap">
+        <table class="runs-table">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Distance (km)</th>
+              <th>Duration</th>
+              <th>Pace</th>
+              <th>Notes</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="runs-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+
+  </div><!-- /page-progress -->
+
+</main>
+
+<script src="app.js"></script>
+</body>
+</html>
