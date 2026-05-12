@@ -364,6 +364,7 @@ main {
   font-weight: 700;
   position: sticky;
   top: 0;
+  z-index: 1;
 }
 .runs-table tbody tr:hover { background: var(--bg); }
 .runs-table tbody tr:last-child td { border-bottom: none; }
